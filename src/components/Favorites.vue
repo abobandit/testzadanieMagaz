@@ -1,8 +1,9 @@
 <script setup>
 import { HeartIcon } from "@heroicons/vue/24/solid"
 import { HeartIcon as HeartIconOutline  } from "@heroicons/vue/24/outline"
-import { favorites, removeFromFavorites } from "../requests/products";
+import {favorites, product, removeFromFavorites} from "../requests/products";
 import { addToCart } from "../requests/cart";
+import {appURL} from "../axios/axios.js";
 
 const favoritesData = ref([])
 
@@ -36,8 +37,7 @@ handleFavorites();
                 </div>
             </template>
             <div class="products-body">
-                <PhotoIcon></PhotoIcon>
-                <el-image v-if="false" src="https://avatars.mds.yandex.net/i?id=ca9cf06436fde06a800e87bb3711d167_l-10599899-images-thumbs&n=13" />
+                <el-image style="width: 100px; height: 100px"  :src="appURL + favorite.product.images[0]" />
                 <div>Описание:</div>
                 <div>
                     {{ favorite.product.description }}

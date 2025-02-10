@@ -1,13 +1,13 @@
+export const appURL = 'http://app-name:81/'
 export const instance = axios.create({
-    baseURL: 'http://vlad-diplom-backend/api/',
+    baseURL: appURL + 'api/',
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${getToken()}`
+        'Authorization': `Bearer ${getToken()}`,
     },
-    withCredentials: true,
 });
 
 
 export function getToken() {
-    return localStorage.getItem('token');
+    return localStorage.getItem('token') ?? '';
 }

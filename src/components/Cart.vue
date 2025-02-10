@@ -2,13 +2,15 @@
 import { computed } from 'vue';
 import { updateCartProuductDetail, cart, removeCartProuduct, addOrder } from '../requests/cart';
 import { el } from 'element-plus/es/locales.mjs';
+import {appURL} from "../axios/axios.js";
+import {product} from "../requests/products.js";
 
 const cartData = ref([])
 const isAllChoosen = computed(() => cartData.value.every(el => el.isChoosen))
 
 async function handleGetCartProducts() {
     const data = await cart();
-    cartData.value = data.data
+    cartData.value = data.data.data
 }
 
 async function handleUpdateQuantity(id, count = 1) {
@@ -64,8 +66,8 @@ handleGetCartProducts();
             >
             </el-checkbox>
             
-            <PhotoIcon></PhotoIcon>
-            <el-image v-if="false" src="https://avatars.mds.yandex.net/i?id=ca9cf06436fde06a800e87bb3711d167_l-10599899-images-thumbs&n=13" />
+<!--            <PhotoIcon></PhotoIcon>-->
+            <el-image style="width: 100px; height: 100px" :src="appURL + item.product.images[0]" />
             <div class="cart-description">
                 <div class="cart-name">{{ item.product.name }}</div>
                 <div>Артикул: {{ item.product.sku }}</div>

@@ -16,7 +16,7 @@ const form = reactive({
 async function handleProfile() {
     try {
         const data = await profile();
-        userStore.setUser(data.data)
+        userStore.setUser(data.data.data)
     } catch (e) {
         
     }

@@ -43,6 +43,7 @@ async function handleLogout() {
             <template #dropdown>
                 <div class="user-dropdown">
                     <el-dropdown-menu>
+                        <el-dropdown-item ><router-link to="/me">Профиль</router-link> </el-dropdown-item>
                         <el-dropdown-item @click="handleLogout">Выйти</el-dropdown-item>
                     </el-dropdown-menu>
                 </div>

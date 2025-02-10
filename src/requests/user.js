@@ -12,6 +12,10 @@ export function profile() {
   return instance.get('/auth/profile')
 }
 
+export function edit(data) {
+  return instance.post('/auth/edit',data)
+}
+
 export function logout() {
   return instance.post('/auth/logout')
 }

@@ -1,21 +1,31 @@
 <script setup>
-import { HeartIcon } from "@heroicons/vue/24/solid"
-import { HeartIcon as HeartIconOutline, PhotoIcon  } from "@heroicons/vue/24/outline"
-import { addToFavorites, deleteProduct, product, products, updateProduct } from "../requests/products";
-import { ref } from "vue";
-import { addToCart } from "../requests/cart";
-import { categories } from "../requests/categories";
-import { useUserStore } from "../store";
+import {HeartIcon} from "@heroicons/vue/24/solid"
+import {HeartIcon as HeartIconOutline} from "@heroicons/vue/24/outline"
+import {
+  addToFavorites,
+  deleteProduct,
+  product,
+  products,
+  removeFromFavorites,
+  updateProduct
+} from "../requests/products";
+import {ref} from "vue";
+import {addToCart} from "../requests/cart";
+import {categories} from "../requests/categories";
+import {useUserStore} from "../store";
+import {appURL} from "../axios/axios.js";
+import ReviewPop from "./ReviewPop.vue";
+import {Star, StarFilled} from "@element-plus/icons-vue";
 
 const productsData = ref([])
 const productEdit = ref(null)
 const categoriesData = ref([])
 const userStore = useUserStore()
+const hoverIndex = ref(null);
 
 const isOpenEditDrawer = ref(false)
-
 const handleClose = (done) => {
-  ElMessageBox.confirm('Вы уверены что хотите закрыть? Не сохраненные данные будут потеряны', 
+  ElMessageBox.confirm('Вы уверены что хотите закрыть? Не сохраненные данные будут потеряны',
     {
       confirmButtonText: 'Заркыть',
       cancelButtonText: 'Отмена',
@@ -44,14 +54,21 @@ async function handleAddToCart(id, count = 1) {
     await handleProducts();
 }
 
-async function handleAddToFavorites(id) {
-    await addToFavorites(id, {product_id: id});
+async function handleAddToFavorites(id,idx) {
+    await addToFavorites(id, {product_id: id}).then(()=>{
+      productsData.value[idx].is_favorite  = true
+    });
+}
+async function handleRemoveFromFavorites(id,idx) {
+    await removeFromFavorites(id, {product_id: id}).then(()=>{
+      productsData.value[idx].is_favorite  = false
+    });
 }
 
 async function handleGetProduct(id) {
     categoriesData.value = (await categories()).data.data;
     productEdit.value = (await product(id)).data.data;
-    
+
 }
 
 async function handleUpdateProduct() {
@@ -63,13 +80,13 @@ async function handleUpdateProduct() {
         description: productEdit.value.description,
         sku: productEdit.value.sku,
     });
-    handleProducts();
-    kyrlukone@gmail.com
-    
+    await handleProducts();
+    // kyrlukone@gmail.com
+
 }
 
 async function handleDeleteProduct(id) {
-    ElMessageBox.confirm('Вы уверены что удалить данный товар?', 
+    ElMessageBox.confirm('Вы уверены что удалить данный товар?',
     {
       confirmButtonText: 'Удалить',
       cancelButtonText: 'Отмена',
@@ -83,20 +100,21 @@ async function handleDeleteProduct(id) {
     .catch(() => {
       // catch error
     })
-    
-}
 
+}
 handleProducts();
 </script>
 
 <template>
     <h2>Каталог</h2>
+
     <div class="products-list">
-        <el-card v-for="product in productsData" :key="product.slug" class="products-item with-sale">
+
+        <el-card v-for="(product,idx) in productsData" :key="product.id" class="products-item with-sale">
             <template #header>
                 <div class="card-header">
                     <span>{{ product.name }}</span>
-                    <span class="products-stock">50%</span>
+                    <span v-if="product.discount_price" class="products-stock">50%</span>
                     <el-dropdown v-if="userStore.isAdmin" trigger="click">
                         <div class="more">
                             <el-icon><MoreFilled /></el-icon>
@@ -116,8 +134,7 @@ handleProducts();
                 </div>
             </template>
             <div class="products-body">
-                <PhotoIcon></PhotoIcon>
-                <el-image v-if="false" src="https://avatars.mds.yandex.net/i?id=ca9cf06436fde06a800e87bb3711d167_l-10599899-images-thumbs&n=13" />
+                <img width="200" height="200" :src="appURL + product.images[0]" >
                 <div>Описание: {{ product.description }}</div>
                 <el-check-tag class="products-category" checked>{{product.category.name}}</el-check-tag>
             </div>
@@ -125,13 +142,16 @@ handleProducts();
                 <div class="products-footer">
                     <div class="products-price">₽ {{ product.price }}</div>
                     <div class="favorites">
-                        <heart-icon-outline v-if="true" @click="handleAddToFavorites(product.id)"/>
-                        <heart-icon v-else/>
+                        <heart-icon-outline v-if="!product.is_favorite" @click="handleAddToFavorites(product.id,idx)"/>
+                        <heart-icon v-else @click="handleRemoveFromFavorites(product.id,idx)"/>
                     </div>
                     <div class="products-cart" @click="handleAddToCart(product.id)">
                         <el-icon><Plus /></el-icon>
                         <el-icon><ShoppingCart /></el-icon>
                     </div>
+                  <ReviewPop
+                      :product_id="product.id"
+                      />
                 </div>
             </template>
         </el-card>
