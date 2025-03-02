@@ -115,10 +115,13 @@ handleProducts();
     <div class="products-list">
             <el-card  class="products-item with-sale" v-for="(product,idx) in productsData" :key="product.id">
             <template #header>
-              <router-link :to="`/product/${product.id}`" >
                 <div class="card-header">
+                  <router-link :to="`/product/${product.id}`" >
+
                     <span>{{ product.name }}</span>
                     <span v-if="product.discount_price" class="products-stock">50%</span>
+                     </router-link>
+
                     <el-dropdown v-if="userStore.isAdmin" trigger="click">
                         <div class="more">
                             <el-icon><MoreFilled /></el-icon>
@@ -136,7 +139,6 @@ handleProducts();
                         </template>
                     </el-dropdown>
                 </div>
-              </router-link>
             </template>
             <div class="products-body">
                 <img width="200" height="200" :src="appURL + product.images[0]" >

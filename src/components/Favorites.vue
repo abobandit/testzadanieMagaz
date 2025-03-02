@@ -33,7 +33,7 @@ handleFavorites();
             <template #header>
                 <div class="card-header">
                     <span>{{ favorite.product.name }}</span>
-                    <span class="products-stock">50%</span>
+                    <span v-if="favorite.product.discount_price " class="products-stock">{{ favorite.product.discount_price }}</span>
                 </div>
             </template>
             <div class="products-body">
