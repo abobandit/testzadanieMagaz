@@ -1,5 +1,22 @@
-# Vue 3 + Vite
+Инструкция:
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+git clone https://github.com/abobandit/testzadanieMagaz.git
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+cd testzadanieMagaz
+
+git checkout tech-zadanie
+
+npm i 
+
+![image](https://github.com/user-attachments/assets/e2ce4096-a8ca-4868-9eb3-9026294cc8cd)
+
+поменяйте appUrl на url вашего сервера
+
+npm run dev
+
+Если развернули бэк, то приложение развернуто
+
+![image](https://github.com/user-attachments/assets/35f4f7da-66aa-488e-b1ad-0fdc82a23b25)
+
+
+если авторизуетесь под админом, то сможете добавлять в избранное и управлять заказами. Данные для авторизации под админом email: admin@admin.com пароль: 123
