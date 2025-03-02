@@ -1,4 +1,4 @@
-export const appURL = 'http://app-name:81/'
+export const appURL = 'http://buildingstore:81/'
 export const instance = axios.create({
     baseURL: appURL + 'api/',
     headers: {

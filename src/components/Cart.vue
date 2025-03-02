@@ -31,7 +31,9 @@ async function handleCreateOrder() {
            quantity: el.quantity
         }
     })
-    await addOrder({ items: filtered});
+    filtered.forEach(el =>{
+       addOrder({ items: [el]});
+    })
     await handleGetCartProducts();
 }
 

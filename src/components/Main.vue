@@ -16,6 +16,8 @@ import {useUserStore} from "../store";
 import {appURL} from "../axios/axios.js";
 import ReviewPop from "./ReviewPop.vue";
 import {Star, StarFilled} from "@element-plus/icons-vue";
+import { nextTick } from "vue";
+
 
 const productsData = ref([])
 const productEdit = ref(null)
@@ -39,7 +41,9 @@ const handleClose = (done) => {
       // catch error
     })
 }
-
+nextTick(() => {
+  isOpenEditDrawer.value = false;
+});
 async function handleProducts() {
     const data = await products();
 
@@ -109,9 +113,9 @@ handleProducts();
     <h2>Каталог</h2>
 
     <div class="products-list">
-
-        <el-card v-for="(product,idx) in productsData" :key="product.id" class="products-item with-sale">
+            <el-card  class="products-item with-sale" v-for="(product,idx) in productsData" :key="product.id">
             <template #header>
+              <router-link :to="`/product/${product.id}`" >
                 <div class="card-header">
                     <span>{{ product.name }}</span>
                     <span v-if="product.discount_price" class="products-stock">50%</span>
@@ -132,6 +136,7 @@ handleProducts();
                         </template>
                     </el-dropdown>
                 </div>
+              </router-link>
             </template>
             <div class="products-body">
                 <img width="200" height="200" :src="appURL + product.images[0]" >
@@ -141,7 +146,7 @@ handleProducts();
             <template #footer>
                 <div class="products-footer">
                     <div class="products-price">₽ {{ product.price }}</div>
-                    <div class="favorites">
+                    <div v-if="userStore.isLoginUser" class="favorites">
                         <heart-icon-outline v-if="!product.is_favorite" @click="handleAddToFavorites(product.id,idx)"/>
                         <heart-icon v-else @click="handleRemoveFromFavorites(product.id,idx)"/>
                     </div>

@@ -6,7 +6,7 @@ import Signup from "../components/Signup.vue";
 import Checkout from "../components/Checkout.vue";
 import Orders from "../components/Orders.vue";
 import Me from "../components/Me.vue";
-
+import ProductCard from "../components/ProductCard.vue";
 const appRoutes = [
     {
         path: '/',
@@ -48,6 +48,11 @@ const appRoutes = [
         name: 'orders',
         component: Orders
     },
+    {
+        path: '/product/:id',
+        name: 'product',
+        component: ProductCard
+    }
 ]
 
 export default appRoutes
